@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>Birthday Escape Room 🎂</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #ffffff;
+      transition: background-color 0.5s;
+      color: #333;
+    }
+    input {
+      padding: 8px;
+      width: 240px;
+      font-size: 16px;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #timer {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🎉 Escape the Birthday Room 🎉</h1>
+<p>Selesaikan semua peringkat untuk membuka ucapan istimewa!</p>
+<p>Untuk menang game ni sila rujuk kad anda!</p>
+<p id="timer"></p>
+
+<!-- LEVEL 1 -->
+<div id="level1">
+  <h2>🧩 Level 1: Identiti</h2>
+  <p>Masukkan nama pemain:</p>
+  <input id="nameInput" placeholder="Nama">
+  <br><br>
+  <button onclick="checkName()">Buka</button>
+</div>
+
+<!-- LEVEL 2 -->
+<div id="level2" style="display:none;">
+  <h2>🔐 Level 2: Kod Rahsia</h2>
+  <p>Masukkan kod yang diberi dalam kad anda:</p>
+  <input id="codeInput" placeholder="Contoh: 0211">
+  <br><br>
+  <button onclick="checkCode()">Buka</button>
+</div>
+
+<!-- LEVEL 3 -->
+<div id="level3" style="display:none;">
+  <h2>🦕 Level 3: Dinosaur</h2>
+  <p>
+    cuba teka dinosaur apa yang aku lukis dalam kad birthday mu tu.<br>
+    hint: Dinosaur ini besar dan berkepala panjang.
+  </p>
+  <input id="dinoInput" placeholder="Nama dinosaur">
+  <br><br>
+  <button onclick="checkDino()">Buka</button>
+</div>
+
+<!-- LEVEL 4 -->
+<div id="level4" style="display:none;">
+  <h2>🧠 Level 4: Teka-Teki</h2>
+  <p>
+    Saya ada kekunci tetapi tiada kunci,<br>
+    ada ruang tetapi tiada bilik,<br>
+    anda boleh masuk tetapi tidak boleh keluar.<br>
+    Apakah saya?
+  </p>
+  <input id="riddleInput" placeholder="Jawapan">
+  <br><br>
+  <button onclick="checkRiddle()">Buka</button>
+</div>
+
+<!-- LEVEL 5 -->
+<div id="level5" style="display:none;">
+  <h2>🔢 Level 5: Matematik</h2>
+  <p>
+    Darab tarikh lahirmu dengan 3,<br>
+    tambah bulan lahirmu,<br>
+    kemudian tolak 5.
+  </p>
+  <input id="mathInput" placeholder="Jawapan">
+  <br><br>
+  <button onclick="checkMath()">Buka</button>
+</div>
+
+<!-- LEVEL 6 -->
+<div id="level6" style="display:none;">
+  <h2>💖 Level 6: Soalan Terakhir</h2>
+  <p>Adakah Azizah comel dan cantik? heheheh</p>
+  <input id="beautyInput" placeholder="Jawapan anda">
+  <br><br>
+  <button onclick="checkBeauty()">Jawab</button>
+</div>
+
+<p id="message" style="font-size:18px; margin-top:20px;"></p>
+
+<script>
+// DATA JAWAPAN
+const nameAnswers = [
+  "wansyah",
+  "nurwansyah",
+  "muhammad nurwansyah",
+  "muhammad nurwansyah bin sarullah"
+];
+
+const dobCode = "0812";
+const dinoName = "brachiosaurus";
+const riddleAnswers = ["keyboard", "papan kekunci"];
+const mathAnswer = 31;
+
+const beautyAnswers = [
+  "iya",
+  "ya",
+  "yes",
+  "iya awak sangat cantik"
+];
+
+// TIMER
+let timerInterval;
+let timeLeft = 60;
+
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = 60;
+  document.getElementById("timer").innerHTML = "⏳ Masa tinggal: " + timeLeft + "s";
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById("timer").innerHTML = "⏳ Masa tinggal: " + timeLeft + "s";
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      alert("⏰ Masa tamat! Cuba semula.");
+      location.reload();
+    }
+  }, 1000);
+}
+
+function changeBg(color) {
+  document.body.style.backgroundColor = color;
+}
+
+// LEVEL FUNCTIONS
+function checkName() {
+  let input = nameInput.value.trim().toLowerCase();
+  if (nameAnswers.includes(input)) {
+    level1.style.display = "none";
+    level2.style.display = "block";
+    message.innerHTML = "✅ Level 1 berjaya!";
+    changeBg("#fce4ec");
+    startTimer();
+  } else {
+    message.innerHTML = "❌ Nama tidak diterima.";
+  }
+}
+
+function checkCode() {
+  if (codeInput.value.trim() === dobCode) {
+    level2.style.display = "none";
+    level3.style.display = "block";
+    message.innerHTML = "✅ Level 2 berjaya!";
+    changeBg("#e8f5e9");
+    startTimer();
+  } else {
+    message.innerHTML = "❌ Kod salah.";
+  }
+}
+
+function checkDino() {
+  if (dinoInput.value.trim().toLowerCase() === dinoName) {
+    level3.style.display = "none";
+    level4.style.display = "block";
+    message.innerHTML = "✅ Level 3 berjaya!";
+    changeBg("#fff3e0");
+    startTimer();
+  } else {
+    message.innerHTML = "❌ Cuba fikir dinosaur berkepala panjang.";
+  }
+}
+
+function checkRiddle() {
+  let ans = riddleInput.value.trim().toLowerCase();
+  if (riddleAnswers.includes(ans)) {
+    level4.style.display = "none";
+    level5.style.display = "block";
+    message.innerHTML = "✅ Level 4 berjaya!";
+    changeBg("#e3f2fd");
+    startTimer();
+  } else {
+    message.innerHTML = "❌ Jawapan salah.";
+  }
+}
+
+function checkMath() {
+  let val = parseInt(mathInput.value.trim());
+  if (!isNaN(val) && val === mathAnswer) {
+    level5.style.display = "none";
+    level6.style.display = "block";
+    message.innerHTML = "✅ Level 5 berjaya!";
+    changeBg("#ede7f6");
+    startTimer();
+  } else {
+    message.innerHTML = "❌ Jawapan tidak tepat.";
+  }
+}
+
+function checkBeauty() {
+  let input = beautyInput.value.trim().toLowerCase();
+  if (beautyAnswers.includes(input)) {
+    clearInterval(timerInterval);
+    level6.style.display = "none";
+    timer.style.display = "none";
+    changeBg("#f3e5f5");
+
+    message.innerHTML = `
+    🎉 <b>Selamat Hari Lahir yang Telah Berlalu (08/12)</b> 🎂✨<br><br>
+    Semoga selepas hari istimewamu itu, hidupmu terus dipenuhi dengan kebaikan,
+    ketenangan, dan kebahagiaan.<br><br>
+    Semoga Allah sentiasa memberkati setiap langkahmu,
+    melindungimu dari segala perkara yang tidak baik,
+    dan mempermudahkan semua urusanmu.<br><br>
+    Semoga rezekimu bertambah,
+    hatimu sentiasa kuat,
+    dan impianmu satu demi satu menjadi kenyataan.<br><br>
+    Teruslah menjadi insan yang baik,
+    ikhlas, dan positif.<br><br>
+    Semoga kebahagiaan sentiasa mengiringimu,
+    dunia dan akhirat 🤍🌙
+    Hadiah istimewa akan diberi pada 26/12. <br><br>
+    `;
+  } else {
+    message.innerHTML = "❌ Jawapan ini tidak diterima. Cuba lagi 💖";
+  }
+}
+</script>
+
+</body>
+</html>
